@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class ServiceTest {
@@ -13,15 +14,11 @@ public class ServiceTest {
 
     public String helloService(String service)
     {
-        String message = redis.get("message");
-
-        return message + ", " + service + "!";
+        return getMessage() + ", " + service + "!";
     }
 
     public String helloJSONService(String service) {
-        String message = redis.get("message");
-
-        return "{\"message\":\"" + message + ", " + service + "!\"}";
+        return "{\"message\":\"" + getMessage() + ", " + service + "!\"}";
     }
 
     public ResponseEntity setHelloService(String header, String message) {
@@ -30,6 +27,14 @@ public class ServiceTest {
         headers.add("header", "test-header");
 
         return new ResponseEntity( "Message set!", headers, HttpStatus.OK);
+    }
+
+    private String getMessage() {
+        String message = redis.get("message");
+        if (StringUtils.isEmpty(message)) {
+            message = "Hello";
+        }
+        return message;
     }
 
 }

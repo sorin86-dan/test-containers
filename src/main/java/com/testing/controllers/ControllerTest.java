@@ -26,8 +26,4 @@ public class ControllerTest {
         return serviceTest.setHelloService(header, jsonBody);
     }
 
-    @GetMapping(value = "/exception")
-    public String getException() throws IllegalStateException {
-        throw new IllegalStateException("Custom generated exception");
-    }
 }

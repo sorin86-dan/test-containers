@@ -37,17 +37,10 @@ public class DefaultTest {
         // Now we have an address and port for Redis, no matter where it is running
         redisCache = new RedisCache(address, port);
     }
-    @Test
-    public void checkExceptionEndpoint() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/exception"))
-                .andExpect(status().isConflict())
-                .andExpect(content().string("Custom Exception"));
-    }
 
     @Test
     public void checkServiceMessageEndpoint() throws Exception {
         redisCache.put("message", "Hello");
-        System.out.println(redisCache.get("message"));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/message?service=TestServiceX"))
                 .andExpect(status().is2xxSuccessful())
