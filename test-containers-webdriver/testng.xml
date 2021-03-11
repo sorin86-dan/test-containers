@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="TestSuite" parallel="tests" thread-count="2">
+    <test name="testCloudFirefox">
+        <parameter name="browser" value="firefox">
+            <classes>
+                <class name="com.testing.MainPageTest"></class>
+                <class name="com.testing.BlogPageTest"></class>
+                <class name="com.testing.AboutPageTest"></class>
+                <class name="com.testing.ContactPageTest"></class>
+            </classes>
+        </parameter>
+    </test>
+    <test name="testCloudChrome">
+        <parameter name="browser" value="chrome">
+            <classes>
+                <class name="com.testing.MainPageTest"></class>
+                <class name="com.testing.BlogPageTest"></class>
+                <class name="com.testing.AboutPageTest"></class>
+                <class name="com.testing.ContactPageTest"></class>
+            </classes>
+        </parameter>
+    </test>
+</suite>
