@@ -31,7 +31,8 @@ public class BaseTest {
         }
 
         browser.start();
-//        System.out.println("VNC address: " + browser.getVncAddress());
+//      For VNC Viewer:
+//      System.out.println("VNC address: " + browser.getVncAddress());
         webDriver = browser.getWebDriver();
 
 

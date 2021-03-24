@@ -9,6 +9,7 @@
 
     <modules>
         <module>test-containers-redit</module>
+        <module>test-containers-mysql</module>
         <module>test-containers-webdriver</module>
     </modules>
 
