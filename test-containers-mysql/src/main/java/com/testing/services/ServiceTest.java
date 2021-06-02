@@ -1,8 +1,7 @@
 package com.testing.services;
 
-import com.testing.utils.MySQLCache;
+import com.testing.utils.MySQLWrapper;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ public class ServiceTest {
     private String url = "jdbc:mysql://localhost:3306/Test";
     private String user = "sorin";
     private String pass = "P@55w0rd!";
-    private MySQLCache mySQL = new MySQLCache(url, user, pass);
+    private MySQLWrapper mySQL = new MySQLWrapper(url, user, pass);
 
 
     public ResponseEntity addProductDB(String body) throws SQLException {

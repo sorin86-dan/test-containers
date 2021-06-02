@@ -1,18 +1,17 @@
 package com.testing.utils;
 
-import com.mysql.cj.log.Slf4JLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 
-public class MySQLCache {
+public class MySQLWrapper {
     private static Connection conn;
     private static Statement statement;
 
-    private static final Logger LOG = LoggerFactory.getLogger(MySQLCache.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MySQLWrapper.class);
 
-    public MySQLCache (String url, String user, String pass) {
+    public MySQLWrapper(String url, String user, String pass) {
         try {
             if(conn == null) {
                 conn = DriverManager.getConnection(url, user, pass);

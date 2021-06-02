@@ -1,10 +1,8 @@
 package com.testing;
 
-import com.testing.utils.MySQLCache;
+import com.testing.utils.MySQLWrapper;
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.containers.output.Slf4jLogConsumer;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -31,7 +28,7 @@ public class DefaultTest {
             .withPassword("P@55w0rd!2")
             .withDatabaseName("Test2");
 
-    private static MySQLCache mySQLCache;
+    private static MySQLWrapper mySQLWrapper;
 
 
     @Autowired
@@ -40,7 +37,7 @@ public class DefaultTest {
     @BeforeClass
     public static void setUp() {
         mySQLContainer.start();
-        mySQLCache = new MySQLCache(mySQLContainer.getJdbcUrl(), mySQLContainer.getUsername(), mySQLContainer.getPassword());
+        mySQLWrapper = new MySQLWrapper(mySQLContainer.getJdbcUrl(), mySQLContainer.getUsername(), mySQLContainer.getPassword());
     }
 
     @AfterClass
@@ -71,7 +68,7 @@ public class DefaultTest {
                 .andExpect(status().is5xxServerError())
                 .andExpect(content().string("There are no records available!"));
 
-        mySQLCache.insert("Product", "ProductName", "masina", "Price", "5000");
+        mySQLWrapper.insert("Product", "ProductName", "masina", "Price", "5000");
         mockMvc.perform(MockMvcRequestBuilders.get("/get-product?productName=masina"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().string(containsString("ProductName = masina, Price = 5000")));
@@ -79,7 +76,7 @@ public class DefaultTest {
 
     @Test
     public void checkUpdateProductEndpoint() throws Exception {
-        mySQLCache.insert("Product", "ProductName", "televizor", "Price", "255.25");
+        mySQLWrapper.insert("Product", "ProductName", "televizor", "Price", "255.25");
         mockMvc.perform(MockMvcRequestBuilders.put("/update-product")
                 .content("{" +
                         "\"productName\":\"televizor\"," +
@@ -96,7 +93,7 @@ public class DefaultTest {
 
     @Test
     public void checkDeleteProductEndpoint() throws Exception {
-        mySQLCache.insert("Product", "ProductName", "radio", "Price", "25.25");
+        mySQLWrapper.insert("Product", "ProductName", "radio", "Price", "25.25");
         mockMvc.perform(MockMvcRequestBuilders.delete("/remove-product?productName=radio"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().string("Record was removed!"));
