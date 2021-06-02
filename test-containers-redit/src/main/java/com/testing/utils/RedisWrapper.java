@@ -2,11 +2,11 @@ package com.testing.utils;
 
 import redis.clients.jedis.Jedis;
 
-public class RedisCache {
+public class RedisWrapper {
 
     private static Jedis jedis;
 
-    public RedisCache(String hostname, Integer port) {
+    public RedisWrapper(String hostname, Integer port) {
         jedis = new Jedis(hostname, port);
     }
 

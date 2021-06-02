@@ -1,6 +1,6 @@
 package com.testing.services;
 
-import com.testing.utils.RedisCache;
+import com.testing.utils.RedisWrapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +10,7 @@ import org.springframework.util.StringUtils;
 @Service
 public class ServiceTest {
 
-    private RedisCache redis = new RedisCache("localhost", 6379);
+    private RedisWrapper redisWrapper = new RedisWrapper("localhost", 6379);
 
     public String helloService(String service)
     {
@@ -22,7 +22,7 @@ public class ServiceTest {
     }
 
     public ResponseEntity setHelloService(String header, String message) {
-        redis.put("message", message);
+        redisWrapper.put("message", message);
         HttpHeaders headers = new HttpHeaders();
         headers.add("header", "test-header");
 
@@ -30,7 +30,7 @@ public class ServiceTest {
     }
 
     private String getMessage() {
-        String message = redis.get("message");
+        String message = redisWrapper.get("message");
         if (StringUtils.isEmpty(message)) {
             message = "Hello";
         }

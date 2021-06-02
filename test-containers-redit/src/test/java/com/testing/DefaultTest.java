@@ -1,6 +1,6 @@
 package com.testing;
 
-import com.testing.utils.RedisCache;
+import com.testing.utils.RedisWrapper;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class DefaultTest {
     @Autowired
     MockMvc mockMvc;
 
-    private RedisCache redisCache;
+    private RedisWrapper redisWrapper;
 
     @Before
     public void setUp() {
@@ -35,12 +35,12 @@ public class DefaultTest {
         Integer port = redis.getFirstMappedPort();
 
         // Now we have an address and port for Redis, no matter where it is running
-        redisCache = new RedisCache(address, port);
+        redisWrapper = new RedisWrapper(address, port);
     }
 
     @Test
     public void checkServiceMessageEndpoint() throws Exception {
-        redisCache.put("message", "Hello");
+        redisWrapper.put("message", "Hello");
 
         mockMvc.perform(MockMvcRequestBuilders.get("/message?service=TestServiceX"))
                 .andExpect(status().is2xxSuccessful())
@@ -49,7 +49,7 @@ public class DefaultTest {
 
     @Test
     public void checkJSONServiceMessageEndpoint() throws Exception {
-        redisCache.put("message", "Hello");
+        redisWrapper.put("message", "Hello");
 
         mockMvc.perform(MockMvcRequestBuilders.get("/json-message?service=TestServiceJSONX"))
                 .andExpect(status().is2xxSuccessful())
