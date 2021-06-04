@@ -17,6 +17,7 @@ public class DemoTest extends BaseTest{
         webDriver.get("https://www.seleniumeasy.com/test/basic-first-form-demo.html");
         DemoPage demoPage = new DemoPage(webDriver);
 
+        demoPage.clickNoBanner();
         demoPage.fillMessage("Test message");
         demoPage.clickMessageBtn();
 

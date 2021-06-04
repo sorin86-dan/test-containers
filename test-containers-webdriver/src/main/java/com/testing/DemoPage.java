@@ -4,16 +4,20 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
 import java.util.logging.Logger;
 
-public class DemoPage {
+public class DemoPage extends PageFactory {
 
     private WebDriver webDriver;
     private final static Logger logger = Logger.getLogger(DemoPage.class.getName());
 
     private final static String INPUT_MESSAGE_BTN = "//form[@id='get-input']/button";
     private final static String SUM_BTN = "//form[@id='gettotal']/button";
+
+    @FindBy(how = How.ID, using = "at-cv-lightbox-close")
+    private WebElement noBannerLink;
 
     @FindBy(how = How.ID, using = "user-message")
     private WebElement inputMessageField;
@@ -39,6 +43,12 @@ public class DemoPage {
 
     public DemoPage(WebDriver webDriver) {
         this.webDriver = webDriver;
+        PageFactory.initElements(webDriver, this);
+    }
+
+    public void clickNoBanner() {
+        logger.info("Removing banner");
+        noBannerLink.click();
     }
 
     public void fillMessage(String text) {
