@@ -1,7 +1,12 @@
 package com.testing;
 
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testng.annotations.AfterClass;
@@ -15,7 +20,6 @@ public class BaseTest {
 
     protected RemoteWebDriver webDriver;
     protected String browserName;
-    protected BrowserWebDriverContainer browser;
 
     @Parameters("browser")
     @BeforeClass
@@ -23,30 +27,22 @@ public class BaseTest {
         this.browserName = browserName;
 
         if(browserName.equals("firefox")) {
-            browser = new BrowserWebDriverContainer<>()
-                    .withCapabilities(new FirefoxOptions());
+            System.setProperty("webdriver.gecko.driver", "src/test/resources/geckodriver");
+            webDriver = new FirefoxDriver(new FirefoxOptions());
         } else {
-            browser = new BrowserWebDriverContainer<>()
-                    .withCapabilities(new ChromeOptions());
+            System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver");
+            webDriver = new ChromeDriver(new ChromeOptions());
         }
 
-        browser.start();
-//      For VNC Viewer:
-//      System.out.println("VNC address: " + browser.getVncAddress());
-        webDriver = browser.getWebDriver();
-
-
-        webDriver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-        webDriver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
-        webDriver.manage().timeouts().setScriptTimeout(15, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
 
     }
 
     @AfterClass
     protected void tearDown() {
         webDriver.quit();
-        browser.stop();
-        browser.close();
     }
 
 }
