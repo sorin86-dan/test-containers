@@ -20,6 +20,7 @@ public class BaseTest {
 
     protected RemoteWebDriver webDriver;
     protected String browserName;
+    protected BrowserWebDriverContainer browser;
 
     @Parameters("browser")
     @BeforeClass
@@ -27,22 +28,27 @@ public class BaseTest {
         this.browserName = browserName;
 
         if(browserName.equals("firefox")) {
-            System.setProperty("webdriver.gecko.driver", "src/test/resources/geckodriver");
-            webDriver = new FirefoxDriver(new FirefoxOptions());
+            browser = new BrowserWebDriverContainer<>().withCapabilities(new FirefoxOptions());
         } else {
-            System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver");
-            webDriver = new ChromeDriver(new ChromeOptions());
+            browser = new BrowserWebDriverContainer<>().withCapabilities(new ChromeOptions());
         }
 
-        webDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-        webDriver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
-        webDriver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
+        browser.start();
+//        For VNC Viewer:
+//        System.out.println("VNC address: " + browser.getVncAddress());
+        webDriver = browser.getWebDriver();
+
+        webDriver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().setScriptTimeout(15, TimeUnit.SECONDS);
 
     }
 
     @AfterClass
     protected void tearDown() {
         webDriver.quit();
+        browser.stop();
+        browser.close();
     }
 
 }
